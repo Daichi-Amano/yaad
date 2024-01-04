@@ -1,0 +1,228 @@
+---
+import { Image } from "astro:assets";
+import Layout from "./Layout.astro";
+const { frontmatter } = Astro.props;
+const mainImg = `../assets/${frontmatter.id}/${frontmatter.img}`;
+const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
+---
+
+<Layout title="YAAD.inc">
+  <main>
+    <div class="wrapper">
+      <div class="info">
+        <h5>Release</h5>
+        <p>{frontmatter.release}</p>
+        <h5 class="category">Category</h5>
+        <p>{frontmatter.category}</p>
+        <h5>Credit</h5>
+        <div class="credit">
+          {
+            frontmatter.credits.map(({ name, value }: any) => {
+              return (
+                <div class="credit-item">
+                  <p class="credit-name">{name}</p>
+                  <p class="credit-value">{value}</p>
+                </div>
+              );
+            })
+          }
+        </div>
+        <a class="back" href="/">Back To Page</a>
+      </div>
+      <div class="content">
+        <a
+          href={frontmatter.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={`text-decoration:${
+            frontmatter.link ? "underline" : "none"
+          }; cursor:${frontmatter.link ? "pointer" : "default"}
+          `}
+        >
+          <h1 class="title">{frontmatter.title}</h1>
+        </a>
+        <Image class="main-img" src={assets[mainImg]()} alt="main-image" />
+        <slot />
+        {
+          frontmatter.link && (
+            <a
+              href={frontmatter.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link"
+            >
+              <span>Official Link</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 1H1V19H19V11M12.5 1H19V7.68571"
+                  stroke="white"
+                  stroke-width="2"
+                />
+                <path d="M19 1L7 13" stroke="white" stroke-width="2" />
+              </svg>
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </main>
+  <video
+    src={`/src/assets/01/${frontmatter.video}`}
+    autoplay
+    loop
+    muted
+    playsinline></video>
+</Layout>
+<style>
+  main {
+    padding: 16.8rem 1.8rem 0 1.8rem;
+    position: relative;
+    @media (min-width: 768px) {
+      padding: 16.8rem 2.4rem 0 2.4rem;
+    }
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    position: sticky;
+    top: 100px;
+    @media (min-width: 768px) {
+      grid-template-columns: 47.5rem 1fr;
+    }
+  }
+  .info {
+    grid-row: 2/3;
+    font-family: var(--neue);
+    font-weight: 400;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.2rem 5.2rem;
+    height: fit-content;
+    @media (min-width: 768px) {
+      grid-row: 1/2;
+      position: sticky;
+      top: 16.8rem;
+    }
+    .credit {
+      display: flex;
+      flex-direction: column;
+    }
+    h5 {
+      font-weight: 600;
+    }
+  }
+  .category {
+    margin-bottom: 2rem;
+    @media (min-width: 768px) {
+      margin-bottom: 7.2rem;
+    }
+  }
+  .credit {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    @media (min-width: 768px) {
+      gap: 2.8rem;
+    }
+  }
+  .credit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    @media (min-width: 768px) {
+      gap: 0.8rem;
+    }
+  }
+  .back {
+    display: none;
+    color: #fff;
+    font-family: var(--neue);
+    font-size: 3.2rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 32px */
+    text-decoration-line: underline;
+    grid-column: 1 / 3;
+    margin: 10rem 0;
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
+  .content {
+    a {
+      text-decoration: underline;
+    }
+    .title {
+      color: #fff;
+      font-family: var(--neue);
+      font-size: 4rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 100%; /* 40px */
+      margin-bottom: 4rem;
+      @media (min-width: 768px) {
+        font-size: 9.6rem;
+        margin-bottom: 6rem;
+      }
+    }
+    p {
+      color: #fff;
+      font-feature-settings: "palt" on;
+      font-size: 1.4rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 150%; /* 21px */
+      letter-spacing: 0.07rem;
+      @media (min-width: 768px) {
+        font-size: 2rem;
+      }
+    }
+    .link {
+      border-radius: 0.6rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 6.4rem;
+      width: 18rem;
+      margin-top: 3.2rem;
+      padding: 0 2.4rem;
+      color: #fff;
+      font-feature-settings: "palt" on;
+      font-family: var(--neue);
+      font-size: 1.6rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 100%; /* 16px */
+      @media (min-width: 768px) {
+        margin-top: 6rem;
+        width: 24rem;
+        height: 7.2rem;
+        font-size: 2rem;
+      }
+      svg {
+        height: 1.4rem;
+        width: 1.4rem;
+        @media (min-width: 768px) {
+          height: 1.8rem;
+          width: 1.8rem;
+        }
+      }
+    }
+  }
+  .main-img {
+    width: 100%;
+    height: auto;
+  }
+  video {
+    opacity: 1;
+  }
+</style>

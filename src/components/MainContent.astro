@@ -1,0 +1,186 @@
+---
+import { Image } from "astro:assets";
+const { index, id, img, title, category, release, video } = Astro.props;
+const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
+---
+
+<div id={`main-content-${index}`} class="main-content">
+  <a href=`/${("0" + (index + 1)).slice(-2)}`>
+    <div class="ticker">
+      <div class="ticker__item">
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <!-- <img src={img} alt="main-image" />
+        <img src={img} alt="main-image" />
+        <img src={img} alt="main-image" />
+        <img src={img} alt="main-image" /> -->
+      </div>
+      <div class="ticker__item">
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <Image
+          class="main-img"
+          src={assets[`../assets/${id}/${img}`]()}
+          alt="main-image"
+        />
+        <!-- <img src={img} alt="main-image" />
+        <img src={img} alt="main-image" />
+        <img src={img} alt="main-image" />
+        <img src={img} alt="main-image" /> -->
+      </div>
+    </div>
+    <div class="desc">
+      <h1>{title}</h1>
+      <p>{category}</p>
+      <p>Release - {release}</p>
+    </div>
+  </a>
+  <video src={`/src/assets/${id}/${video}`} autoplay loop muted playsinline
+  ></video>
+</div>
+<style>
+  .main-content {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .ticker {
+    /* margin: 0 -1.8rem;
+    @media (min-width: 768px) {
+      margin: 0 -2.4rem;
+    } */
+  }
+  .ticker,
+  .ticker__item {
+    display: flex;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .ticker__item {
+    &:first-child {
+      animation: ticker 20s -10s linear infinite;
+    }
+    &:last-child {
+      animation: ticker2 20s linear infinite;
+    }
+  }
+  img {
+    flex-shrink: 0;
+    height: 34rem;
+    width: 34rem;
+    padding: 0 0.7rem;
+    @media (min-width: 768px) {
+      padding: 0 0.85rem;
+      height: 51.7rem;
+      width: 51.7rem;
+    }
+  }
+  .desc {
+    color: #fff;
+    font-family: var(--neue);
+    font-style: normal;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: -2.2rem;
+    position: relative;
+    z-index: 1;
+    @media (min-width: 768px) {
+      gap: 0.7rem;
+      margin-top: -9.8rem;
+      margin-left: 14rem;
+    }
+    h1 {
+      font-size: 4rem;
+      line-height: 100%; /* 72px */
+      @media (min-width: 768px) {
+        font-size: 7.2rem;
+      }
+    }
+    p {
+      font-size: 1.3rem;
+      line-height: 100%; /* 13px */
+      @media (min-width: 768px) {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  @keyframes ticker {
+    0% {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes ticker2 {
+    0% {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-200%);
+    }
+  }
+</style>
+<script>
+  import { activeIndex } from "../lib/store";
+  document.addEventListener("DOMContentLoaded", function () {
+    const targets = document.querySelectorAll(".main-content");
+    targets.forEach(function (target, index) {
+      const video = target.querySelector("video")!;
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              activeIndex.set(index);
+              video.style.opacity = "1";
+            } else {
+              video.style.opacity = "0";
+            }
+          });
+        },
+        {
+          threshold: 0.5,
+        },
+      );
+      observer.observe(target);
+    });
+  });
+</script>

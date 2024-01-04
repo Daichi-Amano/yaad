@@ -7,11 +7,21 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "disable-bar": "astro preferences disable devToolbar"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
+    "@astrojs/preact": "^3.0.2",
+    "@nanostores/preact": "^0.5.0",
     "astro": "^4.0.8",
+    "nanostores": "^0.9.5",
+    "preact": "^10.19.3",
+    "swiper": "^11.0.5",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1",
+    "prettier-plugin-astro": "^0.12.3"
   }
 }

@@ -2,6 +2,13 @@
 import { Image } from "astro:assets";
 const { index, id, img, title, category, release, video } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
+
+let videoSrc;
+const loadVideo = async () => {
+  videoSrc = videoAsset.default;
+};
+const videoAsset = await assets[`../assets/${id}/${video}`]();
+await loadVideo();
 ---
 
 <div id={`main-content-${index}`} class="main-content">
@@ -66,8 +73,7 @@ const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
       <p>Release - {release}</p>
     </div>
   </a>
-  <video src={`/src/assets/${id}/${video}`} autoplay loop muted playsinline
-  ></video>
+  <video src={videoSrc} autoplay loop muted playsinline></video>
 </div>
 <style>
   .main-content {

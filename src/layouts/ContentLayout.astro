@@ -4,6 +4,14 @@ import Layout from "./Layout.astro";
 const { frontmatter } = Astro.props;
 const mainImg = `../assets/${frontmatter.id}/${frontmatter.img}`;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
+
+let videoSrc;
+const loadVideo = async () => {
+  videoSrc = videoAsset.default;
+};
+const videoAsset =
+  await assets[`../assets/${frontmatter.id}/${frontmatter.video}`]();
+await loadVideo();
 ---
 
 <Layout title="YAAD.inc">
@@ -72,12 +80,7 @@ const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
       </div>
     </div>
   </main>
-  <video
-    src={`/src/assets/01/${frontmatter.video}`}
-    autoplay
-    loop
-    muted
-    playsinline></video>
+  <video src={videoSrc} autoplay loop muted playsinline></video>
 </Layout>
 <style>
   main {

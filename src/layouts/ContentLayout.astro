@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "./Layout.astro";
+import Copyright from "../components/Copyright.astro";
 const { frontmatter } = Astro.props;
 const mainImg = `../assets/${frontmatter.id}/${frontmatter.img}`;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
@@ -80,6 +81,9 @@ await loadVideo();
       </div>
     </div>
   </main>
+  <footer>
+    <Copyright />
+  </footer>
   <video src={videoSrc} autoplay loop muted playsinline></video>
 </Layout>
 <style>
@@ -158,6 +162,10 @@ await loadVideo();
     }
   }
   .content {
+    margin-bottom: 3.2rem;
+    @media (min-width: 768px) {
+      margin-bottom: 0;
+    }
     a {
       text-decoration: underline;
     }
@@ -224,6 +232,13 @@ await loadVideo();
   .main-img {
     width: 100%;
     height: auto;
+  }
+  footer {
+    margin-top: 5.6rem;
+    text-align: right;
+    @media (min-width: 768px) {
+      margin-top: 14rem;
+    }
   }
   video {
     opacity: 1;

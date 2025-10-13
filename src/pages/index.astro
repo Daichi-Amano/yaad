@@ -6,7 +6,7 @@ import MainContent from "../components/MainContent.astro";
 // import Header from "../components/Header.astro";
 // import HeaderList from "../components/HeaderList";
 // const { contents } = data;
-const data = await Astro.glob("./*.md");
+const data = await Astro.glob("../_posts/*.md");
 const contents = data.map(({ frontmatter }) => frontmatter);
 ---
 

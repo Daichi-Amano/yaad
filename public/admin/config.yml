@@ -1,0 +1,64 @@
+backend:
+  name: github
+  repo: daichi-amano/yaad
+  branch: master
+  # base_url: "https://yaad.inc"
+  # auth_endpoint: "/api/auth"
+media_folder: "public/images"
+public_folder: "/images"
+collections:
+  - name: works
+    label: Works
+    label_singular: Work
+    folder: "src/posts"
+    extension: "md"
+    format: frontmatter
+    identifier_field: id
+    create: true
+    slug: "{{id}}"
+    fields:
+      - label: Layout
+        name: layout
+        widget: hidden
+        default: "../layouts/ContentLayout.astro"
+      - label: ID
+        name: id
+        widget: string
+      - label: Title
+        name: title
+        widget: string
+      - label: Category
+        name: category
+        widget: string
+      - label: Release
+        name: release
+        widget: string
+      - label: Hero Image
+        name: img
+        widget: image
+      - label: Video
+        name: video
+        widget: file
+        required: false
+      - label: Credits
+        name: credits
+        widget: list
+        collapsed: true
+        fields:
+          - label: Role
+            name: name
+            widget: string
+          - label: Values
+            name: value
+            widget: list
+            field:
+              label: Value
+              name: value
+              widget: string
+      - label: Link
+        name: link
+        widget: string
+        required: false
+      - label: Body
+        name: body
+        widget: markdown

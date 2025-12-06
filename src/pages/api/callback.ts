@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ request, cookies, url }) => {
+export const GET: APIRoute = async ({ cookies, url }) => {
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
   const storedState = cookies.get("oauth_state")?.value;

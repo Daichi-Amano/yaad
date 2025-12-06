@@ -6,7 +6,7 @@ backend:
   base_url: "https://yaad-gold.vercel.app"
   auth_endpoint: "/api/auth"
 media_folder: "src/assets/images"
-public_folder: "src/assets/images"
+public_folder: "../assets/images"
 collections:
   - name: works
     label: Works
@@ -16,7 +16,7 @@ collections:
     format: frontmatter
     identifier_field: id
     create: true
-    slug: "{{slug}}"
+    slug: "{{id}}"
     fields:
       - label: Layout
         name: layout

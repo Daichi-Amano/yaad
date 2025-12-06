@@ -5,10 +5,7 @@ import Copyright from "../components/Copyright.astro";
 const { frontmatter } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
-const imgAsset =
-  await assets[
-    `../assets/images/${frontmatter.img.replace("src/assets/images/", "")}`
-  ]();
+const imgAsset = await assets[frontmatter.img]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 
 const pageTitle = `${frontmatter.title} | YAAD.inc`;
@@ -100,7 +97,7 @@ const currentPageIndex = allContents.findIndex(
                     <p>{frontmatter.client}</p>
                   </div>
                   {
-                    frontmatter.credits.map(({ name, value }: any) => {
+                    frontmatter.credits?.map(({ name, value }: any) => {
                       return (
                         <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
                           <p>{name}</p>

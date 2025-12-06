@@ -6,7 +6,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://yaad.inc",
+  site: import.meta.env.PUBLIC_SITE_URL || "https://yaad.inc",
+  output: "server",
   integrations: [preact()],
 
   vite: {

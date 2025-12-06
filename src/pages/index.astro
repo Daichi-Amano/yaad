@@ -72,7 +72,6 @@ const contents = data.map(({ frontmatter }) => frontmatter);
         return;
       }
       const savedScrollPosition = sessionStorage.getItem("scrollPosition");
-      console.log(savedScrollPosition);
       if (savedScrollPosition !== null) {
         // View Transitionsのアニメーション完了後にスクロール
         // 少し遅延を入れて、DOMが完全にレンダリングされるのを待つ

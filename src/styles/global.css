@@ -33,6 +33,45 @@ img {
 video {
   @apply fixed top-0 left-0 w-full h-full object-cover opacity-0 z-[-1] transition-opacity duration-1000;
 }
+article {
+  @apply text-white font-medium leading-[150%] tracking-[0.07rem] text-[1.4rem] md:text-[1.4rem];
+  a {
+    @apply underline;
+  }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  img {
+    @apply mb-[1rem] md:mb-[1.5rem];
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-[1.5rem] md:text-[1.8rem];
+  }
+  strong {
+    @apply font-black;
+  }
+  ul {
+    @apply list-disc list-inside;
+  }
+  ol {
+    @apply list-decimal list-inside;
+  }
+  li {
+    @apply mb-[1rem] md:mb-[1.5rem];
+  }
+  img {
+    @apply w-full h-auto;
+  }
+}
 
 @keyframes ticker {
   0% {
@@ -58,5 +97,32 @@ video {
   }
   100% {
     top: 1.4rem;
+  }
+}
+
+/* View Transitions アニメーション */
+::view-transition-old(root) {
+  animation: fade-out 0.3s ease-in-out;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 0.3s ease-in-out;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

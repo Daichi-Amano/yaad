@@ -2,10 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Copyright from "../components/Copyright.astro";
 import MainContent from "../components/MainContent.astro";
-// import data from "../lib/data.json";
-// import Header from "../components/Header.astro";
-// import HeaderList from "../components/HeaderList";
-// const { contents } = data;
+import Loading from "../components/Loading.astro";
 const data = await Astro.glob("./*.md");
 const contents = data.map(({ frontmatter }) => frontmatter);
 ---
@@ -14,9 +11,7 @@ const contents = data.map(({ frontmatter }) => frontmatter);
   title="YAAD.inc"
   description="YAAD.inc - Creative Studio. クリエイティブスタジオとして、ブランディング、デザイン、映像制作など様々な領域で活動しています。"
 >
-  <!-- <Header>
-    <HeaderList client:load contents={contents} />
-  </Header> -->
+  <Loading />
   <main class="py-16 max-w-full flex-1">
     {
       contents.map(({ id, title, categories, release, img }, index) => {
@@ -43,34 +38,4 @@ const contents = data.map(({ frontmatter }) => frontmatter);
     </div>
     <Copyright />
   </footer>
-  <script>
-    function scrollToSection() {
-      const sectionIndex = sessionStorage.getItem("scrollToSection");
-      if (sectionIndex !== null) {
-        const targetId = `main-content-${sectionIndex}`;
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          // Wait for page to be fully loaded
-          setTimeout(() => {
-            targetElement.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-            // Clear sessionStorage after scrolling
-            sessionStorage.removeItem("scrollToSection");
-          }, 100);
-        } else {
-          // Clear if element not found
-          sessionStorage.removeItem("scrollToSection");
-        }
-      }
-    }
-
-    // Scroll on page load
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", scrollToSection);
-    } else {
-      scrollToSection();
-    }
-  </script>
 </Layout>

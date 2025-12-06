@@ -16,65 +16,93 @@ import loader from "../assets/loader.svg";
 </div>
 
 <script>
-  // トップページかどうかをチェック
-  const isTopPage =
-    window.location.pathname === "/" ||
-    window.location.pathname === "/index.html";
+  // // トップページかどうかをチェック
+  // const isTopPage =
+  //   window.location.pathname === "/" ||
+  //   window.location.pathname === "/index.html";
 
-  // ページ遷移フラグをチェック
-  const isPageNavigation = sessionStorage.getItem("isPageNavigation");
-  sessionStorage.removeItem("isPageNavigation");
+  // // ページ遷移フラグをチェック
+  // const isPageNavigation = sessionStorage.getItem("isPageNavigation");
+  // sessionStorage.removeItem("isPageNavigation");
 
-  // リンククリック時にフラグを設定
-  document.addEventListener("click", function (e) {
-    const element = e.target as HTMLElement;
-    const target = element.closest("a");
-    if (
-      target &&
-      target.href &&
-      !target.target &&
-      !target.hasAttribute("download")
-    ) {
-      const url = new URL(target.href);
-      if (url.origin === window.location.origin) {
-        sessionStorage.setItem("isPageNavigation", "true");
-      }
-    }
-  });
+  // // リンククリック時にフラグを設定
+  // document.addEventListener("click", function (e) {
+  //   const element = e.target as HTMLElement;
+  //   const target = element.closest("a");
+  //   if (
+  //     target &&
+  //     target.href &&
+  //     !target.target &&
+  //     !target.hasAttribute("download")
+  //   ) {
+  //     const url = new URL(target.href);
+  //     if (url.origin === window.location.origin) {
+  //       sessionStorage.setItem("isPageNavigation", "true");
+  //     }
+  //   }
+  // });
 
-  // トップページかつページ遷移でない場合のみローディングを表示
-  if (isTopPage && !isPageNavigation) {
-    window.addEventListener("load", function () {
-      const loading = document.getElementById("loading");
-      const loaderLogo = document.getElementById("loader-logo");
+  // // トップページかつページ遷移でない場合のみローディングを表示
+  // if (isTopPage && !isPageNavigation) {
+  //   window.addEventListener("load", function () {
+  //     const loading = document.getElementById("loading");
+  //     const loaderLogo = document.getElementById("loader-logo");
 
-      if (loading && loaderLogo) {
-        // 1. 0.25秒待ってからロゴを1秒アニメーション
-        setTimeout(() => {
-          loaderLogo.classList.remove("opacity-0");
-          loaderLogo.classList.add("opacity-100");
+  //     if (loading && loaderLogo) {
+  //       // 1. 0.25秒待ってからロゴを1秒アニメーション
+  //       setTimeout(() => {
+  //         loaderLogo.classList.remove("opacity-0");
+  //         loaderLogo.classList.add("opacity-100");
 
-          // 2. ロゴアニメーション完了後、0.25秒待ってから画面全体を1秒アニメーション
-          setTimeout(() => {
-            loading.classList.remove("opacity-100");
-            loading.classList.add("opacity-0");
+  //         // 2. ロゴアニメーション完了後、0.25秒待ってから画面全体を1秒アニメーション
+  //         setTimeout(() => {
+  //           loading.classList.remove("opacity-100");
+  //           loading.classList.add("opacity-0");
 
-            // 3. アニメーション完了後にinvisibleを追加してDOMから削除
-            setTimeout(() => {
-              loading.classList.add("invisible");
-              setTimeout(() => {
-                loading.remove();
-              }, 50);
-            }, 1000); // transition-opacity duration-1000に合わせる
-          }, 1250); // ロゴアニメーション1秒 + 待機0.25秒 = 1.25秒
-        }, 250); // 初期表示後0.25秒待機
-      }
-    });
-  } else {
-    // トップページでない、またはページ遷移時は即座に非表示
+  //           // 3. アニメーション完了後にinvisibleを追加してDOMから削除
+  //           setTimeout(() => {
+  //             loading.classList.add("invisible");
+  //             setTimeout(() => {
+  //               loading.remove();
+  //             }, 50);
+  //           }, 1000); // transition-opacity duration-1000に合わせる
+  //         }, 1250); // ロゴアニメーション1秒 + 待機0.25秒 = 1.25秒
+  //       }, 250); // 初期表示後0.25秒待機
+  //     }
+  //   });
+  // } else {
+  //   // トップページでない、またはページ遷移時は即座に非表示
+  //   const loading = document.getElementById("loading");
+  //   if (loading) {
+  //     loading.remove();
+  //   }
+  // }
+
+  function loadingAnimation() {
     const loading = document.getElementById("loading");
-    if (loading) {
-      loading.remove();
+    const loaderLogo = document.getElementById("loader-logo");
+
+    if (loading && loaderLogo) {
+      // 1. 0.25秒待ってからロゴを1秒アニメーション
+      setTimeout(() => {
+        loaderLogo.classList.remove("opacity-0");
+        loaderLogo.classList.add("opacity-100");
+
+        // 2. ロゴアニメーション完了後、0.25秒待ってから画面全体を1秒アニメーション
+        setTimeout(() => {
+          loading.classList.remove("opacity-100");
+          loading.classList.add("opacity-0");
+
+          // 3. アニメーション完了後にinvisibleを追加してDOMから削除
+          setTimeout(() => {
+            loading.classList.add("invisible");
+            setTimeout(() => {
+              loading.remove();
+            }, 50);
+          }, 1000); // transition-opacity duration-1000に合わせる
+        }, 1250); // ロゴアニメーション1秒 + 待機0.25秒 = 1.25秒
+      }, 250); // 初期表示後0.25秒待機
     }
   }
+  loadingAnimation();
 </script>

@@ -3,16 +3,11 @@ import { Image, getImage } from "astro:assets";
 const { index, id, img, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
-console.log(img);
-console.log(id);
 const imgAsset = await assets[`../assets/${id}/${img}`]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 ---
 
-<div
-  id={`main-content-${index}`}
-  class="relative h-screen w-full flex items-center"
->
+<div id={id} class="relative h-screen w-full flex items-center">
   <div
     class="fixed top-0 left-0 w-full h-full object-cover opacity-0 z-[-1] transition-opacity duration-1000 blur-[10px] overflow-hidden scale-110"
     style={`background-image: url(${optimizedImage.src}); background-size: 120%; background-position: center;`}
@@ -92,14 +87,21 @@ const optimizedImage = await getImage({ src: imgAsset.default });
 </div>
 <script>
   import { activeIndex } from "../lib/store";
-  document.addEventListener("DOMContentLoaded", function () {
-    const targets = document.querySelectorAll('[id^="main-content-"]');
+
+  function initBackgroundAnimations() {
+    const targets = document.querySelectorAll("[id]");
     let currentActiveIndex = -1;
 
     targets.forEach(function (target, index) {
       const backgroundImage = target.querySelector(
         "[data-background-image]",
       ) as HTMLElement;
+
+      // 既存のオブザーバーをクリーンアップ
+      const existingObserver = (target as any).__intersectionObserver;
+      if (existingObserver) {
+        existingObserver.disconnect();
+      }
 
       var observer = new IntersectionObserver(
         function (entries) {
@@ -135,6 +137,8 @@ const optimizedImage = await getImage({ src: imgAsset.default });
         },
       );
       observer.observe(target);
+      // オブザーバーを保存（クリーンアップ用）
+      (target as any).__intersectionObserver = observer;
     });
 
     // 初期表示：最初のセクションが表示されている場合は背景を表示
@@ -153,5 +157,18 @@ const optimizedImage = await getImage({ src: imgAsset.default });
         }
       }
     }
-  });
+  }
+
+  // 初回読み込み時
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initBackgroundAnimations);
+  } else {
+    initBackgroundAnimations();
+  }
+
+  // View Transitionsのページ遷移後にも実行
+  // astro:page-loadはページが読み込まれた時に発火
+  // astro:after-swapはページがスワップされた後に発火（フォールバック）
+  document.addEventListener("astro:page-load", initBackgroundAnimations);
+  document.addEventListener("astro:after-swap", initBackgroundAnimations);
 </script>

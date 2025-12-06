@@ -9,22 +9,18 @@ const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 const imgAsset = await assets[img]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 
-// 説明文を生成（frontmatterにdescriptionがあればそれを使用、なければタイトルとカテゴリから生成）
-const description =
-  frontmatter.description ||
-  `${frontmatter.title} - ${frontmatter.categories ? frontmatter.categories.join(", ") : frontmatter.category || ""} - YAAD.inc`;
-
 const pageTitle = `${frontmatter.title} | YAAD.inc`;
 
 // すべてのページデータを取得して、現在のページのインデックスを計算
 const allPages = await Astro.glob("../pages/*.md");
 const allContents = allPages.map(({ frontmatter }) => frontmatter);
+
 const currentPageIndex = allContents.findIndex(
   (content) => content.id === frontmatter.id,
 );
 ---
 
-<Layout title={pageTitle} description={description} ogType="article">
+<Layout title={pageTitle} ogType="article">
   <main
     class="pt-[16.8rem] px-[1.8rem] relative md:pt-[16.8rem] md:px-[2.4rem]"
     data-page-index={currentPageIndex}
@@ -56,17 +52,15 @@ const currentPageIndex = allContents.findIndex(
       <div class="grid grid-cols-1 md:grid-cols-[47.5rem_1fr]">
         <a
           class="hidden md:block md:sticky md:top-[20rem] md:self-start w-fit text-white font-neue text-[2.8rem] font-semibold leading-[100%] underline"
-          href="/"
+          href={`/#${frontmatter.id}`}
           data-section-index={parseInt(frontmatter.id) - 1}>Back To Page</a
         >
         <div class="flex flex-col gap-[7rem] md:gap-[10rem]">
           <div class="flex flex-col gap-[4rem] md:gap-[7rem]">
             <Image class="w-full h-auto" src={assets[img]()} alt="main-image" />
-            <div
-              class="text-white font-medium leading-[150%] tracking-[0.07rem] [&_a]:underline [&_p]:text-white [&_p]:text-[1.4rem] [&_p]:font-medium [&_p]:leading-[150%] [&_p]:tracking-[0.07rem] md:[&_p]:text-[1.4rem]"
-            >
+            <article>
               <slot />
-            </div>
+            </article>
           </div>
           <div
             class="flex flex-col gap-[6rem] pt-[2.4rem] md:pt-[4rem] border-t border-white/30"
@@ -110,7 +104,7 @@ const currentPageIndex = allContents.findIndex(
             </div>
             <a
               class="block md:hidden w-fit text-white font-neue text-[2.8rem] font-semibold leading-[100%] underline"
-              href="/"
+              href={`/#${frontmatter.id}`}
               data-section-index={parseInt(frontmatter.id) - 1}>Back To Page</a
             >
           </div>

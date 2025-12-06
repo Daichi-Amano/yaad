@@ -29,52 +29,91 @@ const currentPageIndex = allContents.findIndex(
     class="pt-[16.8rem] px-[1.8rem] relative md:pt-[16.8rem] md:px-[2.4rem]"
     data-page-index={currentPageIndex}
   >
-    <div class="grid grid-cols-1 sticky top-[100px] md:grid-cols-[47.5rem_1fr]">
-      <div
-        class="text-white font-neue text-[4rem] font-semibold leading-[100%] mb-16 md:text-[9.6rem] md:mb-24"
-      >
-        <h1>{frontmatter.title}</h1>
-      </div>
-      <div
-        class="font-neue font-normal grid grid-cols-[auto_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem]"
-      >
-        <h5 class="font-semibold">Client</h5>
-        <p>{frontmatter.client}</p>
-        <h5 class="font-semibold">Release</h5>
-        <p>{frontmatter.release}</p>
-        <h5 class="font-semibold mb-8 md:mb-[7.2rem]">Category</h5>
-        <p>
-          {
-            frontmatter.categories
-              ? frontmatter.categories.join(", ")
-              : frontmatter.category || ""
-          }
-        </p>
-        <h5 class="font-semibold">Credit</h5>
-        <div class="flex flex-col gap-[1.6rem] md:gap-[2.8rem]">
-          {
-            frontmatter.credits.map(({ name, value }: any) => {
-              return (
-                <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
-                  <p class="font-semibold">{name}</p>
-                  <p>{value}</p>
-                </div>
-              );
-            })
-          }
+    <div class="flex flex-col gap-[7rem] md:gap-[12.5rem]">
+      <div class="flex flex-col gap-[1.6rem]">
+        <h1
+          class="text-white font-neue text-[4rem] font-semibold leading-[100%] md:text-[9.6rem]"
+        >
+          {frontmatter.title}
+        </h1>
+        <div
+          class="font-neue font-normal grid grid-cols-[6rem_1fr] md:grid-cols-[8rem_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem] text-[1.1rem] md:text-[1.4rem]"
+        >
+          <h5>Client</h5>
+          <p>{frontmatter.client}</p>
+          <h5>Release</h5>
+          <p>{frontmatter.release}</p>
+          <h5>Categories</h5>
+          <p>
+            {
+              frontmatter.categories
+                ? frontmatter.categories.join(", ")
+                : frontmatter.category || ""
+            }
+          </p>
         </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-[47.5rem_1fr]">
         <a
-          class="hidden md:block text-white font-neue text-[3.2rem] font-semibold leading-[100%] underline col-span-2 my-40"
+          class="hidden md:block md:sticky md:top-[20rem] md:self-start w-fit text-white font-neue text-[2.8rem] font-semibold leading-[100%] underline"
           href="/"
           data-section-index={parseInt(frontmatter.id) - 1}>Back To Page</a
         >
-      </div>
-      <div class="mb-[3.2rem] md:mb-0">
-        <Image class="w-full h-auto" src={assets[img]()} alt="main-image" />
-        <div
-          class="text-white text-[1.4rem] font-medium leading-[150%] tracking-[0.07rem] md:text-[2rem] [&_a]:underline [&_p]:text-white [&_p]:text-[1.4rem] [&_p]:font-medium [&_p]:leading-[150%] [&_p]:tracking-[0.07rem] md:[&_p]:text-[2rem]"
-        >
-          <slot />
+        <div class="flex flex-col gap-[7rem] md:gap-[10rem]">
+          <div class="flex flex-col gap-[4rem] md:gap-[7rem]">
+            <Image class="w-full h-auto" src={assets[img]()} alt="main-image" />
+            <div
+              class="text-white font-medium leading-[150%] tracking-[0.07rem] [&_a]:underline [&_p]:text-white [&_p]:text-[1.4rem] [&_p]:font-medium [&_p]:leading-[150%] [&_p]:tracking-[0.07rem] md:[&_p]:text-[1.4rem]"
+            >
+              <slot />
+            </div>
+          </div>
+          <div
+            class="flex flex-col gap-[6rem] pt-[2.4rem] md:pt-[4rem] border-t border-white/30"
+          >
+            <div
+              class="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-[2.4rem] md:gap-[1.2rem] text-[1.1rem] md:text-[1.4rem]"
+            >
+              <div
+                class="font-neue font-normal grid grid-cols-[6rem_1fr] md:grid-cols-[12rem_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem]"
+              >
+                <h5 class="font-semibold">Client</h5>
+                <p>{frontmatter.client}</p>
+                <h5 class="font-semibold">Release</h5>
+                <p>{frontmatter.release}</p>
+                <h5 class="font-semibold mb-8 md:mb-[7.2rem]">Categories</h5>
+                <p>
+                  {
+                    frontmatter.categories
+                      ? frontmatter.categories.join(", ")
+                      : frontmatter.category || ""
+                  }
+                </p>
+              </div>
+              <div
+                class="font-neue font-normal grid grid-cols-[6rem_1fr] md:grid-cols-[12rem_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem]"
+              >
+                <h5 class="font-semibold">Credit</h5>
+                <div class="flex flex-col gap-[1.6rem] md:gap-[2.8rem]">
+                  {
+                    frontmatter.credits.map(({ name, value }: any) => {
+                      return (
+                        <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
+                          <p>{name}</p>
+                          <p>{value}</p>
+                        </div>
+                      );
+                    })
+                  }
+                </div>
+              </div>
+            </div>
+            <a
+              class="block md:hidden w-fit text-white font-neue text-[2.8rem] font-semibold leading-[100%] underline"
+              href="/"
+              data-section-index={parseInt(frontmatter.id) - 1}>Back To Page</a
+            >
+          </div>
         </div>
       </div>
     </div>

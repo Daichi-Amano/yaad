@@ -15,9 +15,12 @@ body {
 }
 
 main {
-  @apply overflow-x-hidden;
+  @apply overflow-x-clip;
 }
 
+h5 {
+  @apply font-semibold;
+}
 a,
 button {
   @apply cursor-pointer;

@@ -39,8 +39,8 @@ export default function HeaderList({ contents }) {
   return (
     <nav class="text-white font-neue font-semibold flex flex-col justify-between md:h-[6.8rem]">
       <p class="text-[1.4rem]">
-        {("0" + ($activeIndex + 1)).slice(-2)}/
-        {("0" + contents.length).slice(-2)}
+        {("0" + ($activeIndex + 1)).slice(-2)} /{" "}
+        <span class="text-white/50">{("0" + contents.length).slice(-2)}</span>
       </p>
       <div class="hidden md:flex flex-col justify-center gap-[0.5rem] h-[3.7rem] overflow-hidden">
         {viewList.map(({ content, index }) => {

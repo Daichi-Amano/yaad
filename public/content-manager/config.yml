@@ -17,6 +17,8 @@ collections:
     identifier_field: id
     create: true
     slug: "{{id}}"
+    summary: "{{id}} - {{title}}"
+    sortable_fields: ["id", "title", "release"]
     fields:
       - label: Layout
         name: layout
@@ -26,6 +28,8 @@ collections:
         name: id
         widget: string
         required: true
+        pattern: ['^[^/\\\\]+$', "スラッシュやバックスラッシュは使用できません"]
+        hint: "このIDがファイル名として使用されます。既存のIDと重複しないようにしてください。IDを変更すると、ファイル名も変更されます。"
       - label: Title
         name: title
         widget: string

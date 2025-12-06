@@ -5,8 +5,8 @@ backend:
   site_domain: "yaad-gold.vercel.app"
   base_url: "https://yaad-gold.vercel.app"
   auth_endpoint: "/api/auth"
-media_folder: "public/images"
-public_folder: "/images"
+media_folder: "src/assets/images"
+public_folder: "src/assets/images"
 collections:
   - name: works
     label: Works
@@ -25,18 +25,23 @@ collections:
       - label: ID
         name: id
         widget: string
+        required: true
+        unique: true
       - label: Title
         name: title
         widget: string
+        required: true
       - label: Image
         name: img
         widget: image
+        required: true
       - label: Body
         name: body
         widget: markdown
       - label: Client
         name: client
         widget: string
+        required: true
       - label: Release
         name: release
         widget: string

@@ -3,10 +3,9 @@ import { Image, getImage } from "astro:assets";
 import Layout from "./Layout.astro";
 import Copyright from "../components/Copyright.astro";
 const { frontmatter } = Astro.props;
-const img = `../assets/${frontmatter.id}/${frontmatter.img}`;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
-const imgAsset = await assets[img]();
+const imgAsset = await assets[`../assets/images/${frontmatter.img}`]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 
 const pageTitle = `${frontmatter.title} | YAAD.inc`;
@@ -56,7 +55,11 @@ const currentPageIndex = allContents.findIndex(
         >
         <div class="flex flex-col gap-[7rem] md:gap-[10rem]">
           <div class="flex flex-col gap-[4rem] md:gap-[7rem]">
-            <Image class="w-full h-auto" src={assets[img]()} alt="main-image" />
+            <Image
+              class="w-full h-auto"
+              src={imgAsset.default}
+              alt="main-image"
+            />
             <article>
               <slot />
             </article>
@@ -88,6 +91,10 @@ const currentPageIndex = allContents.findIndex(
               >
                 <h5 class="font-semibold">Credit</h5>
                 <div class="flex flex-col gap-[1.6rem] md:gap-[2.8rem]">
+                  <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
+                    <p>Client</p>
+                    <p>{frontmatter.client}</p>
+                  </div>
                   {
                     frontmatter.credits.map(({ name, value }: any) => {
                       return (

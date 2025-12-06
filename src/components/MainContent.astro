@@ -3,7 +3,7 @@ import { Image, getImage } from "astro:assets";
 const { id, img, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
-const imgAsset = await assets[`../assets/${id}/${img}`]();
+const imgAsset = await assets[`../assets/images/${img}`]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 ---
 
@@ -20,44 +20,44 @@ const optimizedImage = await getImage({ src: imgAsset.default });
       <div class="flex shrink-0 animate-[ticker_30s_-15s_linear_infinite]">
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
       </div>
       <div class="flex shrink-0 animate-[ticker2_30s_linear_infinite]">
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={assets[`../assets/${id}/${img}`]()}
+          src={imgAsset.default}
           alt="main-image"
         />
       </div>

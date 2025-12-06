@@ -3,10 +3,10 @@ import { Image, getImage } from "astro:assets";
 import Layout from "./Layout.astro";
 import Copyright from "../components/Copyright.astro";
 const { frontmatter } = Astro.props;
-const mainImg = `../assets/${frontmatter.id}/${frontmatter.img}`;
+const img = `../assets/${frontmatter.id}/${frontmatter.img}`;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
-const imgAsset = await assets[mainImg]();
+const imgAsset = await assets[img]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 
 // 説明文を生成（frontmatterにdescriptionがあればそれを使用、なければタイトルとカテゴリから生成）
@@ -70,7 +70,7 @@ const currentPageIndex = allContents.findIndex(
         >
       </div>
       <div class="mb-[3.2rem] md:mb-0">
-        <Image class="w-full h-auto" src={assets[mainImg]()} alt="main-image" />
+        <Image class="w-full h-auto" src={assets[img]()} alt="main-image" />
         <div
           class="text-white text-[1.4rem] font-medium leading-[150%] tracking-[0.07rem] md:text-[2rem] [&_a]:underline [&_p]:text-white [&_p]:text-[1.4rem] [&_p]:font-medium [&_p]:leading-[150%] [&_p]:tracking-[0.07rem] md:[&_p]:text-[2rem]"
         >

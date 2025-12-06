@@ -3,6 +3,8 @@ import { Image, getImage } from "astro:assets";
 const { index, id, img, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
+console.log(img);
+console.log(id);
 const imgAsset = await assets[`../assets/${id}/${img}`]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 ---

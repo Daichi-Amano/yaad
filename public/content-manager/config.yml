@@ -26,7 +26,6 @@ collections:
         name: id
         widget: string
         required: true
-        unique: true
       - label: Title
         name: title
         widget: string
@@ -38,6 +37,7 @@ collections:
       - label: Body
         name: body
         widget: markdown
+        required: false
       - label: Client
         name: client
         widget: string
@@ -45,6 +45,7 @@ collections:
       - label: Release
         name: release
         widget: string
+        required: false
       - label: Categories
         name: categories
         widget: list
@@ -52,6 +53,7 @@ collections:
           label: Category
           name: category
           widget: string
+        required: false
       - label: Credits
         name: credits
         widget: list
@@ -67,3 +69,4 @@ collections:
               label: Value
               name: value
               widget: string
+        required: false

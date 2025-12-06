@@ -9,7 +9,7 @@ const optimizedImage = await getImage({ src: imgAsset.default });
 <div id={id} data-section class="relative h-screen w-full flex items-center">
   <div
     class="fixed top-0 left-0 w-full h-full object-cover opacity-0 z-[-1] transition-opacity duration-1000 blur-[10px] overflow-hidden scale-110"
-    style={`background-image: url(${optimizedImage.src}); background-size: 120%; background-position: center;`}
+    style={`background-image: url(${optimizedImage.src}); background-size: cover; background-position: center;`}
     data-background-image
   >
     <div class="absolute inset-0 bg-black/20"></div>

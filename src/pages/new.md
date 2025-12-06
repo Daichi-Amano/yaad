@@ -1,6 +1,6 @@
 ---
 layout: ../layouts/ContentLayout.astro
-id: new1
+id: "01"
 title: Title
 img: sample2.jpg
 client: client

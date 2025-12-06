@@ -37,42 +37,17 @@ export default function HeaderList({ contents }) {
   }, [$activeIndex]);
 
   return (
-    <nav>
-      <p class="nav-no">
+    <nav class="text-white font-neue font-semibold flex flex-col justify-between md:h-[6.8rem]">
+      <p class="text-[1.4rem]">
         {("0" + ($activeIndex + 1)).slice(-2)}/
         {("0" + contents.length).slice(-2)}
       </p>
-      {/* <swiper-container
-        // class="nav-titles"
-        space-between="0"
-        // style="display:block; height: 5.4rem;"
-        slide-per-view="3"
-        free-mode="true"
-        free-mode-sticky="true"
-        free-mode-momentum-radio="0.8"
-        free-mode-momentum-velocity-ratio="0.25"
-        free-mode-momentum-minimum-velocity="0.1"
-        mouse-wheel-control="true"
-        mouse-wheel-sensitive="0.5"
-        loop="true"
-        direction="vertical"
-        slide-to-clicked-slide="true"
-        centerd-slides="true"
-      >
-        {contents.map((content) => {
-          return (
-            <swiper-slide>
-              <p>{content.title}</p>
-            </swiper-slide>
-          );
-        })}
-      </swiper-container> */}
-      <div class="nav-titles">
+      <div class="hidden md:flex flex-col justify-center gap-[0.5rem] h-[3.7rem] overflow-hidden">
         {viewList.map(({ content, index }) => {
           return (
             <p
-              class={`nav-title ${
-                $activeIndex === index ? "nav-title--active" : ""
+              class={`text-[1.5rem] leading-[100%] ${
+                $activeIndex === index ? "opacity-100" : "opacity-50"
               }`}
             >
               {content.title}

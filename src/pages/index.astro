@@ -10,19 +10,22 @@ const data = await Astro.glob("./*.md");
 const contents = data.map(({ frontmatter }) => frontmatter);
 ---
 
-<Layout title="YAAD.inc">
+<Layout
+  title="YAAD.inc"
+  description="YAAD.inc - Creative Studio. クリエイティブスタジオとして、ブランディング、デザイン、映像制作など様々な領域で活動しています。"
+>
   <!-- <Header>
     <HeaderList client:load contents={contents} />
   </Header> -->
-  <main>
+  <main class="py-16 max-w-full flex-1">
     {
-      contents.map(({ id, title, category, release, img, video }, index) => {
+      contents.map(({ id, title, categories, release, img, video }, index) => {
         return (
           <MainContent
             id={id}
             index={index}
             title={title}
-            category={category}
+            categories={categories}
             release={release}
             img={img}
             video={video}
@@ -31,48 +34,14 @@ const contents = data.map(({ frontmatter }) => frontmatter);
       })
     }
   </main>
-  <footer>
-    <div class="scroll">
-      <span class="scroll__bar"></span>
+  <footer
+    class="fixed bottom-0 left-0 w-full flex justify-between px-[1.8rem] pb-[2.4rem] md:px-[2.4rem] md:pb-8"
+  >
+    <div class="bg-white/50 w-[0.2rem] h-[1.8rem] relative">
+      <span
+        class="absolute top-0 left-0 w-full h-[0.4rem] bg-white animate-[scroll_2s_linear_infinite]"
+      ></span>
     </div>
     <Copyright />
   </footer>
 </Layout>
-
-<style>
-  main {
-    padding: 4rem 0;
-    max-width: 100%;
-  }
-  footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-  .scroll {
-    background-color: rgba(255, 255, 255, 0.5);
-    width: 0.2rem;
-    height: 1.8rem;
-    position: relative;
-  }
-  .scroll__bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0.4rem;
-    background-color: #fff;
-    animation: scroll 2s linear infinite;
-  }
-  @keyframes scroll {
-    0% {
-      top: 0;
-    }
-    100% {
-      top: 1.4rem;
-    }
-  }
-</style>

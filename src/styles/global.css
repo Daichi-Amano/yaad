@@ -1,1 +1,55 @@
 @import "tailwindcss";
+
+@theme {
+  --font-neue: neue-haas-grotesk-display, "Noto Sans JP", sans-serif;
+  --font-abril: abril-text, "Noto Sans JP", sans-serif;
+  --font-noto: "Noto Sans JP", sans-serif;
+}
+
+html {
+  @apply text-white font-noto text-[calc(10vw/375*100)] md:text-[calc(10vw/1440*100)];
+}
+
+body {
+  @apply relative flex min-h-screen flex-col text-[1.4rem] w-full md:text-[2rem];
+}
+
+main {
+  @apply overflow-x-hidden;
+}
+
+a,
+button {
+  @apply cursor-pointer;
+}
+
+video {
+  @apply fixed top-0 left-0 w-full h-full object-cover opacity-0 z-[-1] transition-opacity duration-1000;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes ticker2 {
+  0% {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-200%);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 1.4rem;
+  }
+}

@@ -1,15 +1,24 @@
 ---
 // import data from "../lib/data.json";
 import HeaderList from "../components/HeaderList";
+import { Image } from "astro:assets";
+import logo from "../assets/logo.svg";
 // const { contents } = data;
 const data = await Astro.glob("../pages/*.md");
 const contents = data.map(({ frontmatter }) => frontmatter);
 ---
 
-<header>
+<header
+  class="fixed top-0 left-0 w-full z-10 grid grid-cols-[auto_1fr_auto] items-center gap-[1.7rem] md:items-start md:gap-[4.8rem] px-[1.8rem] pt-[2.4rem] pb-[2.4rem] md:px-[2.4rem] md:pt-8 md:pb-8"
+>
   <a href="/">
-    <svg
-      class="logo"
+    <Image
+      src={logo}
+      alt="logo"
+      class="w-[7.1rem] h-[5.4rem] md:w-36 md:h-[6.8rem]"
+    />
+    <!-- <svg
+      class="w-[7.1rem] h-[5.4rem] md:w-36 md:h-[6.8rem]"
       width="90"
       height="69"
       viewBox="0 0 90 69"
@@ -39,13 +48,17 @@ const contents = data.map(({ frontmatter }) => frontmatter);
       <path
         d="M87.6114 68.3703C88.9307 68.3703 90.0002 67.4497 90.0002 66.314C90.0002 65.1784 88.9307 64.2578 87.6114 64.2578C86.2922 64.2578 85.2227 65.1784 85.2227 66.314C85.2227 67.4497 86.2922 68.3703 87.6114 68.3703Z"
         fill="white"></path>
-    </svg>
+    </svg> -->
   </a>
   <HeaderList client:load transition:persist contents={contents} />
-  <a class="contact" href="mailto:info@sample.com">
+  <a
+    class="text-[1.6rem] md:text-[2rem] flex items-center justify-center gap-[0.6rem] text-white h-fit text-center font-neue font-semibold leading-[100%]"
+    href="mailto:info@sample.com"
+  >
     <span>Contact</span>
     <span>
       <svg
+        class="w-[1.7rem] md:w-[2.1rem]"
         width="17"
         height="17"
         viewBox="0 0 17 17"
@@ -57,54 +70,3 @@ const contents = data.map(({ frontmatter }) => frontmatter);
     </span>
   </a>
 </header>
-<style>
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 1.7rem;
-    @media (min-width: 768px) {
-      align-items: flex-start;
-      gap: 4.8rem;
-    }
-  }
-  .logo {
-    width: 7.1rem;
-    height: 5.4rem;
-    @media (min-width: 768px) {
-      width: 9rem;
-      height: 6.8rem;
-    }
-  }
-  .contact {
-    font-size: 1.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    color: #fff;
-    height: fit-content;
-    text-align: center;
-    leading-trim: both;
-    text-edge: cap;
-    font-family: var(--neue);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 100%;
-    @media (min-width: 768px) {
-      font-size: 2rem;
-    }
-  }
-  .contact svg {
-    width: 1.7rem;
-    @media (min-width: 768px) {
-      width: 2.1rem;
-    }
-  }
-</style>

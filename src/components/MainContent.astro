@@ -1,6 +1,6 @@
 ---
 import { Image, getImage } from "astro:assets";
-const { index, id, img, title, categories, release } = Astro.props;
+const { id, img, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
 const imgAsset = await assets[`../assets/${id}/${img}`]();
@@ -15,7 +15,7 @@ const optimizedImage = await getImage({ src: imgAsset.default });
   >
     <div class="absolute inset-0 bg-black/20"></div>
   </div>
-  <a href={`/${("0" + (index + 1)).slice(-2)}`} class="overflow-x-clip w-full">
+  <a href={`/${id}`} class="overflow-x-clip w-full">
     <div class="flex shrink-0 overflow-hidden">
       <div class="flex shrink-0 animate-[ticker_30s_-15s_linear_infinite]">
         <Image

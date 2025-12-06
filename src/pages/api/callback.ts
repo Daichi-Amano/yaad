@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ url, redirect }) => {
     client_secret: clientSecret,
   };
 
-  let script;
+  let script: any;
 
   try {
     const response = await fetch(tokenUrl, {

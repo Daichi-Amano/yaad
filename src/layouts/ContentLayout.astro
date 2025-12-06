@@ -150,7 +150,7 @@ const currentPageIndex = allContents.findIndex(
         "a[data-section-index]",
       ) as HTMLAnchorElement;
       if (backToPageLink) {
-        backToPageLink.addEventListener("click", function (e) {
+        backToPageLink.addEventListener("click", function () {
           const sectionIndex = this.getAttribute("data-section-index");
           if (sectionIndex !== null) {
             sessionStorage.setItem("scrollToSection", sectionIndex);

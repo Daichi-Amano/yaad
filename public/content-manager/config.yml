@@ -17,8 +17,6 @@ collections:
     identifier_field: id
     create: true
     slug: "{{id}}"
-    media_folder: "src/assets/images"
-    public_folder: "src/assets/images"
     fields:
       - label: Layout
         name: layout

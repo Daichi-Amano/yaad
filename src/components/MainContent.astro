@@ -71,7 +71,7 @@ const optimizedImage = await getImage({ src: imgAsset.default });
         </p>
         <div class="flex flex-wrap gap-[0.7rem] md:gap-[1rem]">
           {
-            categories?.map((category) => {
+            categories?.map((category: string) => {
               return (
                 <span class="inline-block text-[1.2rem] py-[0.7rem] px-[1rem] font-abril border border-white text-[1.3rem] leading-[100%] md:text-[1.8rem] font-medium px-3 py-1 rounded-full">
                   {category.toUpperCase()}

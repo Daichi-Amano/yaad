@@ -18,11 +18,30 @@ await loadVideo();
 <Layout title="YAAD.inc">
   <main>
     <div class="wrapper">
+      <div class="title">
+        <a
+          href={frontmatter.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={`text-decoration:${
+            frontmatter.link ? "underline" : "none"
+          }; cursor:${frontmatter.link ? "pointer" : "default"}
+          `}
+        >
+          <h1>{frontmatter.title}</h1>
+        </a>
+      </div>
       <div class="info">
         <h5>Release</h5>
         <p>{frontmatter.release}</p>
         <h5 class="category">Category</h5>
-        <p>{frontmatter.category}</p>
+        <p>
+          {
+            frontmatter.categories
+              ? frontmatter.categories.join(", ")
+              : frontmatter.category || ""
+          }
+        </p>
         <h5>Credit</h5>
         <div class="credit">
           {
@@ -39,17 +58,6 @@ await loadVideo();
         <a class="back" href="/">Back To Page</a>
       </div>
       <div class="content">
-        <a
-          href={frontmatter.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={`text-decoration:${
-            frontmatter.link ? "underline" : "none"
-          }; cursor:${frontmatter.link ? "pointer" : "default"}
-          `}
-        >
-          <h1 class="title">{frontmatter.title}</h1>
-        </a>
         <Image class="main-img" src={assets[mainImg]()} alt="main-image" />
         <slot />
         {
@@ -103,8 +111,20 @@ await loadVideo();
       grid-template-columns: 47.5rem 1fr;
     }
   }
+  .title {
+    color: #fff;
+    font-family: var(--neue);
+    font-size: 4rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 40px */
+    margin-bottom: 4rem;
+    @media (min-width: 768px) {
+      font-size: 9.6rem;
+      margin-bottom: 6rem;
+    }
+  }
   .info {
-    grid-row: 2/3;
     font-family: var(--neue);
     font-weight: 400;
     display: grid;
@@ -168,19 +188,6 @@ await loadVideo();
     }
     a {
       text-decoration: underline;
-    }
-    .title {
-      color: #fff;
-      font-family: var(--neue);
-      font-size: 4rem;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 100%; /* 40px */
-      margin-bottom: 4rem;
-      @media (min-width: 768px) {
-        font-size: 9.6rem;
-        margin-bottom: 6rem;
-      }
     }
     p {
       color: #fff;

@@ -5,7 +5,13 @@ import MainContent from "../components/MainContent.astro";
 import Loading from "../components/Loading.astro";
 const dataModules = import.meta.glob("./*.md", { eager: true });
 const data = Object.values(dataModules);
-const contents = data.map(({ frontmatter }: any) => frontmatter);
+console.log(data);
+const contents = data.map(({ url, frontmatter }: any) => {
+  return {
+    id: url.replace("/", ""),
+    ...frontmatter,
+  };
+});
 contents.sort((a, b) => {
   const dateA = new Date(a.release ?? 0);
   const dateB = new Date(b.release ?? 0);

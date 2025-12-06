@@ -38,4 +38,69 @@ const contents = data.map(({ frontmatter }) => frontmatter);
     </div>
     <Copyright />
   </footer>
+  <script>
+    // 戻る・進むボタンでの遷移を検出するフラグ
+    let isPopStateNavigation = false;
+
+    // 戻る・進むボタンでの遷移を検出
+    window.addEventListener("popstate", () => {
+      isPopStateNavigation = true;
+      // フラグを一定時間後にリセット（次の通常遷移のため）
+      setTimeout(() => {
+        isPopStateNavigation = false;
+      }, 1000);
+    });
+
+    // ページ遷移前にスクロール位置を保存
+    document.addEventListener("astro:before-swap", () => {
+      if (window.location.pathname !== "/") return;
+      // 戻る・進むボタンでの遷移の場合は保存をスキップ
+      if (isPopStateNavigation) {
+        return;
+      }
+      const scrollY = window.scrollY;
+      sessionStorage.setItem("scrollPosition", scrollY.toString());
+    });
+
+    // スクロール位置を復元する関数
+    function restoreScrollPosition() {
+      if (window.location.pathname !== "/") return;
+      // 戻る・進むボタンでの遷移の場合は復元をスキップ
+      if (isPopStateNavigation) {
+        // 保存されたスクロール位置をクリア（戻る・進むボタンでは不要）
+        sessionStorage.removeItem("scrollPosition");
+        return;
+      }
+      const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+      console.log(savedScrollPosition);
+      if (savedScrollPosition !== null) {
+        // View Transitionsのアニメーション完了後にスクロール
+        // 少し遅延を入れて、DOMが完全にレンダリングされるのを待つ
+        setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(savedScrollPosition, 10),
+            behavior: "auto", // スムーズスクロールではなく即座に移動
+          });
+          // sessionStorageをクリア（一度だけ復元）
+          sessionStorage.removeItem("scrollPosition");
+        }, 0);
+      }
+    }
+
+    // 初回読み込み時（通常のページ読み込み）
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", restoreScrollPosition);
+    } else {
+      restoreScrollPosition();
+    }
+
+    // View Transitionsのページ遷移後にも実行
+    document.addEventListener("astro:page-load", () => {
+      // 少し遅延を入れて、View Transitionsのアニメーションが完了するのを待つ
+      setTimeout(restoreScrollPosition, 100);
+    });
+    document.addEventListener("astro:after-swap", () => {
+      setTimeout(restoreScrollPosition, 100);
+    });
+  </script>
 </Layout>

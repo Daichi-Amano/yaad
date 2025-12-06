@@ -1,20 +1,12 @@
 import { useStore } from "@nanostores/preact";
 import { activeIndex } from "../lib/store";
 import { useEffect, useState } from "preact/hooks";
-// import { register } from "swiper/element/bundle";
-// import "swiper/css";
 
 export default function HeaderList({ contents }) {
   const $activeIndex = useStore(activeIndex);
   const [viewList, setViewList] = useState([]);
 
-  // useEffect(() => {
-  //   register();
-  // }, []);
   useEffect(() => {
-    // const content = document.querySelector(`#main-content-${$activeIndex}`);
-    // content.scrollIntoView({ behavior: "smooth" });
-
     if ($activeIndex === 0) {
       setViewList([
         { content: contents[contents.length - 1], index: contents.length - 1 },

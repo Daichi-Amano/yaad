@@ -7,7 +7,7 @@ const imgAsset = await assets[`../assets/${id}/${img}`]();
 const optimizedImage = await getImage({ src: imgAsset.default });
 ---
 
-<div id={id} class="relative h-screen w-full flex items-center">
+<div id={id} data-section class="relative h-screen w-full flex items-center">
   <div
     class="fixed top-0 left-0 w-full h-full object-cover opacity-0 z-[-1] transition-opacity duration-1000 blur-[10px] overflow-hidden scale-110"
     style={`background-image: url(${optimizedImage.src}); background-size: 120%; background-position: center;`}
@@ -89,7 +89,8 @@ const optimizedImage = await getImage({ src: imgAsset.default });
   import { activeIndex } from "../lib/store";
 
   function initBackgroundAnimations() {
-    const targets = document.querySelectorAll("[id]");
+    // セクションのみを対象にして、ローディングなど別要素のIDを除外
+    const targets = document.querySelectorAll("[data-section]");
     let currentActiveIndex = -1;
 
     targets.forEach(function (target, index) {

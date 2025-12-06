@@ -16,7 +16,7 @@ collections:
     format: frontmatter
     identifier_field: id
     create: true
-    slug: "{{id}}"
+    slug: "{{slug}}"
     fields:
       - label: Layout
         name: layout

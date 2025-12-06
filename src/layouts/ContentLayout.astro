@@ -35,18 +35,30 @@ const currentPageIndex = allContents.findIndex(
         <div
           class="font-neue font-normal grid grid-cols-[6rem_1fr] md:grid-cols-[8rem_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem] text-[1.1rem] md:text-[1.4rem]"
         >
-          <h5>Client</h5>
-          <p>{frontmatter.client}</p>
-          <h5>Release</h5>
-          <p>{frontmatter.release}</p>
-          <h5>Categories</h5>
-          <p>
-            {
-              frontmatter.categories
-                ? frontmatter.categories.join(", ")
-                : frontmatter.category || ""
-            }
-          </p>
+          {
+            frontmatter.client && (
+              <>
+                <h5>Client</h5>
+                <p>{frontmatter.client}</p>
+              </>
+            )
+          }
+          {
+            frontmatter.release && (
+              <>
+                <h5>Release</h5>
+                <p>{frontmatter.release}</p>
+              </>
+            )
+          }
+          {
+            frontmatter.categories && (
+              <>
+                <h5>Categories</h5>
+                <p>{frontmatter.categories?.join(", ")}</p>
+              </>
+            )
+          }
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-[47.5rem_1fr]">
@@ -74,37 +86,56 @@ const currentPageIndex = allContents.findIndex(
               <div
                 class="font-neue font-normal grid grid-cols-[6rem_1fr] md:grid-cols-[12rem_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem]"
               >
-                <h5 class="font-semibold">Client</h5>
-                <p>{frontmatter.client}</p>
-                <h5 class="font-semibold">Release</h5>
-                <p>{frontmatter.release}</p>
-                <h5 class="font-semibold mb-8 md:mb-[7.2rem]">Categories</h5>
-                <p>
-                  {
-                    frontmatter.categories
-                      ? frontmatter.categories.join(", ")
-                      : frontmatter.category || ""
-                  }
-                </p>
+                {
+                  frontmatter.client && (
+                    <>
+                      <h5 class="font-semibold">Client</h5>
+                      <p>{frontmatter.client}</p>
+                    </>
+                  )
+                }
+                {
+                  frontmatter.release && (
+                    <>
+                      <h5 class="font-semibold">Release</h5>
+                      <p>{frontmatter.release}</p>
+                    </>
+                  )
+                }
+                {
+                  frontmatter.categories && (
+                    <>
+                      <h5 class="font-semibold mb-8 md:mb-[7.2rem]">
+                        Categories
+                      </h5>
+                      <p>{frontmatter.categories?.join(", ")}</p>
+                    </>
+                  )
+                }
               </div>
               <div
                 class="font-neue font-normal grid grid-cols-[6rem_1fr] md:grid-cols-[12rem_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem]"
               >
                 <h5 class="font-semibold">Credit</h5>
                 <div class="flex flex-col gap-[1.6rem] md:gap-[2.8rem]">
-                  <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
-                    <p>Client</p>
-                    <p>{frontmatter.client}</p>
-                  </div>
                   {
-                    frontmatter.credits?.map(({ name, value }: any) => {
-                      return (
-                        <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
-                          <p>{name}</p>
-                          <p>{value}</p>
-                        </div>
-                      );
-                    })
+                    frontmatter.client && (
+                      <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
+                        <p>Client</p>
+                        <p>{frontmatter.client}</p>
+                      </div>
+                    )
+                  }
+                  {
+                    frontmatter.credits &&
+                      frontmatter.credits?.map(({ name, value }: any) => {
+                        return (
+                          <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
+                            <p>{name}</p>
+                            <p>{value}</p>
+                          </div>
+                        );
+                      })
                   }
                 </div>
               </div>

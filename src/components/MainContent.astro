@@ -66,9 +66,13 @@ const optimizedImage = await getImage({ src: imgAsset.default });
     >
       <h1 class="text-[4rem] leading-[100%] md:text-[9.6rem]">{title}</h1>
       <div class="flex flex-col gap-[1.4rem] md:gap-[1.6rem]">
-        <p class="text-[1.3rem] leading-[100%] md:text-[1.8rem]">
-          Release - {release}
-        </p>
+        {
+          release && (
+            <p class="text-[1.3rem] leading-[100%] md:text-[1.8rem]">
+              Release - {release}
+            </p>
+          )
+        }
         <div class="flex flex-wrap gap-[0.7rem] md:gap-[1rem]">
           {
             categories?.map((category: string) => {

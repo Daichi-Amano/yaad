@@ -5,7 +5,6 @@ import MainContent from "../components/MainContent.astro";
 import Loading from "../components/Loading.astro";
 const dataModules = import.meta.glob("./*.md", { eager: true });
 const data = Object.values(dataModules);
-console.log(data);
 const contents = data.map(({ url, frontmatter }: any) => {
   return {
     id: url.replace("/", ""),

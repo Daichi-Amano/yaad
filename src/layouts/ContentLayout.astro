@@ -1,18 +1,13 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Layout from "./Layout.astro";
 import Copyright from "../components/Copyright.astro";
 const { frontmatter } = Astro.props;
 const mainImg = `../assets/${frontmatter.id}/${frontmatter.img}`;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
-let videoSrc;
-const loadVideo = async () => {
-  videoSrc = videoAsset.default;
-};
-const videoAsset =
-  await assets[`../assets/${frontmatter.id}/${frontmatter.video}`]();
-await loadVideo();
+const imgAsset = await assets[mainImg]();
+const optimizedImage = await getImage({ src: imgAsset.default });
 
 // 説明文を生成（frontmatterにdescriptionがあればそれを使用、なければタイトルとカテゴリから生成）
 const description =
@@ -69,7 +64,8 @@ const pageTitle = `${frontmatter.title} | YAAD.inc`;
         </div>
         <a
           class="hidden md:block text-white font-neue text-[3.2rem] font-semibold leading-[100%] underline col-span-2 my-40"
-          href="/">Back To Page</a
+          href="/"
+          data-section-index={parseInt(frontmatter.id) - 1}>Back To Page</a
         >
       </div>
       <div class="mb-[3.2rem] md:mb-0">
@@ -114,12 +110,25 @@ const pageTitle = `${frontmatter.title} | YAAD.inc`;
   >
     <Copyright />
   </footer>
-  <video
-    class="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
-    style="opacity: 1;"
-    src={videoSrc}
-    autoplay
-    loop
-    muted
-    playsinline></video>
+  <div
+    class="fixed top-0 left-0 w-full h-full object-cover z-[-1] blur-[10px] overflow-hidden scale-110"
+    style={`opacity: 1; background-image: url(${optimizedImage.src}); background-size: 120%; background-position: center;`}
+  >
+    <div class="absolute inset-0 bg-black/20"></div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const backToPageLink = document.querySelector(
+        "a[data-section-index]",
+      ) as HTMLAnchorElement;
+      if (backToPageLink) {
+        backToPageLink.addEventListener("click", function (e) {
+          const sectionIndex = this.getAttribute("data-section-index");
+          if (sectionIndex !== null) {
+            sessionStorage.setItem("scrollToSection", sectionIndex);
+          }
+        });
+      }
+    });
+  </script>
 </Layout>

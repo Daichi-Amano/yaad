@@ -44,4 +44,34 @@ const contents = data.map(({ frontmatter }) => frontmatter);
     </div>
     <Copyright />
   </footer>
+  <script>
+    function scrollToSection() {
+      const sectionIndex = sessionStorage.getItem("scrollToSection");
+      if (sectionIndex !== null) {
+        const targetId = `main-content-${sectionIndex}`;
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          // Wait for page to be fully loaded
+          setTimeout(() => {
+            targetElement.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            // Clear sessionStorage after scrolling
+            sessionStorage.removeItem("scrollToSection");
+          }, 100);
+        } else {
+          // Clear if element not found
+          sessionStorage.removeItem("scrollToSection");
+        }
+      }
+    }
+
+    // Scroll on page load
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", scrollToSection);
+    } else {
+      scrollToSection();
+    }
+  </script>
 </Layout>

@@ -3,8 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import Copyright from "../components/Copyright.astro";
 import MainContent from "../components/MainContent.astro";
 import Loading from "../components/Loading.astro";
-const data = await Astro.glob("./*.md");
-const contents = data.map(({ frontmatter }) => frontmatter);
+const dataModules = import.meta.glob("./*.md", { eager: true });
+const data = Object.values(dataModules);
+const contents = data.map(({ frontmatter }: any) => frontmatter);
 ---
 
 <Layout

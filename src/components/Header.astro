@@ -4,8 +4,9 @@ import HeaderList from "../components/HeaderList";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
 // const { contents } = data;
-const data = await Astro.glob("../pages/*.md");
-const contents = data.map(({ frontmatter }) => frontmatter);
+const dataModules = import.meta.glob("../pages/*.md", { eager: true });
+const data = Object.values(dataModules);
+const contents = data.map(({ frontmatter }: any) => frontmatter);
 ---
 
 <header

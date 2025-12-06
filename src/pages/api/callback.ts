@@ -1,103 +1,64 @@
+export const prerender = false;
 import type { APIRoute } from "astro";
 
-const renderResultPage = (data: { token?: string; error?: string }) => {
-  const payload = JSON.stringify(data);
+const tokenUrl = "https://github.com/login/oauth/access_token";
+const clientId = import.meta.env.GITHUB_CLIENT_ID;
+const clientSecret = import.meta.env.GITHUB_CLIENT_SECRET;
 
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>GitHub OAuth</title>
-  </head>
-  <body>
-    <script>
-      (function() {
-        const payload = ${payload};
-        if (window.opener) {
-          window.opener.postMessage(payload, "*");
-          window.close();
-        } else {
-          document.body.innerText = payload.error || "Authenticated";
-        }
-      })();
-    </script>
-  </body>
-</html>`;
-};
+export const GET: APIRoute = async ({ url, redirect }) => {
+  const data = {
+    code: url.searchParams.get("code"),
+    client_id: clientId,
+    client_secret: clientSecret,
+  };
 
-const errorResponse = (message: string, status = 400) =>
-  new Response(renderResultPage({ error: message }), {
-    status,
-    headers: {
-      "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
-  });
-
-export const GET: APIRoute = async ({ cookies, url }) => {
-  const githubError = url.searchParams.get("error");
-  if (githubError) {
-    return errorResponse(`GitHub OAuth error: ${githubError}`);
-  }
-
-  const code = url.searchParams.get("code");
-  const state = url.searchParams.get("state");
-  const storedState = cookies.get("oauth_state")?.value;
-
-  if (!state || state !== storedState) {
-    return errorResponse("Invalid state parameter");
-  }
-
-  cookies.set("oauth_state", "", { path: "/", maxAge: 0 });
-
-  if (!code) {
-    return errorResponse("Missing authorization code");
-  }
-
-  const clientId = import.meta.env.GITHUB_CLIENT_ID;
-  const clientSecret = import.meta.env.GITHUB_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    return errorResponse("GitHub OAuth credentials not configured", 500);
-  }
+  let script;
 
   try {
-    const tokenResponse = await fetch(
-      "https://github.com/login/oauth/access_token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          client_id: clientId,
-          client_secret: clientSecret,
-          code,
-        }),
-      },
-    );
-
-    if (!tokenResponse.ok) {
-      return errorResponse("Failed to exchange code for token", 500);
-    }
-
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
-
-    if (!accessToken) {
-      return errorResponse("No access token received from GitHub", 500);
-    }
-
-    return new Response(renderResultPage({ token: accessToken }), {
-      status: 200,
+    const response = await fetch(tokenUrl, {
+      method: "POST",
       headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "no-store",
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify(data),
     });
-  } catch (error) {
-    console.error("OAuth callback error:", error);
-    return errorResponse("Internal server error", 500);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${String(response.status)}`);
+    }
+
+    const body = (await response.json()) as { access_token: string };
+
+    const content = {
+      token: body.access_token,
+      provider: "github",
+    };
+
+    // This is what talks to the DecapCMS page.
+    // Using window.postMessage we give it the token details in a format it's expecting
+    script = `
+      <script>
+        const receiveMessage = (message) => {
+          window.opener.postMessage(
+            'authorization:${content.provider}:success:${JSON.stringify(content)}',
+            message.origin
+          );
+
+          window.removeEventListener("message", receiveMessage, false);
+        }
+        window.addEventListener("message", receiveMessage, false);
+
+        window.opener.postMessage("authorizing:${content.provider}", "*");
+      </script>
+    `;
+
+    return new Response(script, {
+      headers: { "Content-Type": "text/html" },
+    });
+  } catch (err) {
+    // If we hit an error we'll handle that here
+    console.log(err);
+    return redirect("/?error=😡");
   }
 };

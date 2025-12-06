@@ -1,6 +1,6 @@
 ---
 import { Image, getImage } from "astro:assets";
-const { index, id, img, title, categories, release, video } = Astro.props;
+const { index, id, img, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
 const imgAsset = await assets[`../assets/${id}/${img}`]();

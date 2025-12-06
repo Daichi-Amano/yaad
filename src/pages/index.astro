@@ -19,7 +19,7 @@ const contents = data.map(({ frontmatter }) => frontmatter);
   </Header> -->
   <main class="py-16 max-w-full flex-1">
     {
-      contents.map(({ id, title, categories, release, img, video }, index) => {
+      contents.map(({ id, title, categories, release, img }, index) => {
         return (
           <MainContent
             id={id}
@@ -28,7 +28,6 @@ const contents = data.map(({ frontmatter }) => frontmatter);
             categories={categories}
             release={release}
             img={img}
-            video={video}
           />
         );
       })

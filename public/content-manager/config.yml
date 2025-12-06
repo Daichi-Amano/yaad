@@ -37,13 +37,12 @@ collections:
       - label: Release
         name: release
         widget: string
+      - label: Client
+        name: client
+        widget: string
       - label: Hero Image
         name: img
         widget: image
-      - label: Video
-        name: video
-        widget: file
-        required: false
       - label: Credits
         name: credits
         widget: list
@@ -59,10 +58,6 @@ collections:
               label: Value
               name: value
               widget: string
-      - label: Link
-        name: link
-        widget: string
-        required: false
       - label: Body
         name: body
         widget: markdown

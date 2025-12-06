@@ -15,26 +15,25 @@ const description =
   `${frontmatter.title} - ${frontmatter.categories ? frontmatter.categories.join(", ") : frontmatter.category || ""} - YAAD.inc`;
 
 const pageTitle = `${frontmatter.title} | YAAD.inc`;
+
+// すべてのページデータを取得して、現在のページのインデックスを計算
+const allPages = await Astro.glob("../pages/*.md");
+const allContents = allPages.map(({ frontmatter }) => frontmatter);
+const currentPageIndex = allContents.findIndex(
+  (content) => content.id === frontmatter.id,
+);
 ---
 
 <Layout title={pageTitle} description={description} ogType="article">
   <main
     class="pt-[16.8rem] px-[1.8rem] relative md:pt-[16.8rem] md:px-[2.4rem]"
+    data-page-index={currentPageIndex}
   >
     <div class="grid grid-cols-1 sticky top-[100px] md:grid-cols-[47.5rem_1fr]">
       <div
         class="text-white font-neue text-[4rem] font-semibold leading-[100%] mb-16 md:text-[9.6rem] md:mb-24"
       >
-        <a
-          href={frontmatter.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          class={frontmatter.link
-            ? "underline cursor-pointer"
-            : "no-underline cursor-default"}
-        >
-          <h1>{frontmatter.title}</h1>
-        </a>
+        <h1>{frontmatter.title}</h1>
       </div>
       <div
         class="font-neue font-normal grid grid-cols-[auto_1fr] gap-x-[5.2rem] gap-y-[1.2rem] h-fit md:row-[1/2] md:sticky md:top-[16.8rem]"
@@ -75,33 +74,6 @@ const pageTitle = `${frontmatter.title} | YAAD.inc`;
         >
           <slot />
         </div>
-        {
-          frontmatter.link && (
-            <a
-              href={frontmatter.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="rounded-[0.6rem] bg-white/10 backdrop-blur-[20px] no-underline flex items-center justify-between h-[6.4rem] w-[18rem] mt-[3.2rem] px-[2.4rem] text-white font-neue text-[1.6rem] font-semibold leading-[100%] md:mt-24 md:w-[24rem] md:h-[7.2rem] md:text-[2rem]"
-            >
-              <span>Official Link</span>
-              <svg
-                class="h-[1.4rem] w-[1.4rem] md:h-[1.8rem] md:w-[1.8rem]"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 1H1V19H19V11M12.5 1H19V7.68571"
-                  stroke="white"
-                  stroke-width="2"
-                />
-                <path d="M19 1L7 13" stroke="white" stroke-width="2" />
-              </svg>
-            </a>
-          )
-        }
       </div>
     </div>
   </main>
@@ -117,7 +89,22 @@ const pageTitle = `${frontmatter.title} | YAAD.inc`;
     <div class="absolute inset-0 bg-black/20"></div>
   </div>
   <script>
+    import { activeIndex } from "../lib/store";
+
+    // 個別ページにアクセスしたときに、activeIndexを設定してヘッダーに正しい値を表示
     document.addEventListener("DOMContentLoaded", function () {
+      const mainElement = document.querySelector(
+        "main[data-page-index]",
+      ) as HTMLElement;
+      if (mainElement) {
+        const pageIndex = parseInt(
+          mainElement.getAttribute("data-page-index") || "-1",
+        );
+        if (pageIndex >= 0) {
+          activeIndex.set(pageIndex);
+        }
+      }
+
       const backToPageLink = document.querySelector(
         "a[data-section-index]",
       ) as HTMLAnchorElement;

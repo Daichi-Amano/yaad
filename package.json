@@ -14,11 +14,13 @@
     "@astrojs/check": "^0.9.4",
     "@astrojs/preact": "^4.1.1",
     "@nanostores/preact": "^1.0.0",
+    "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.14.4",
     "decap-cms-app": "^3.8.4",
     "nanostores": "^1.0.1",
     "preact": "^10.27.2",
     "swiper": "^12.0.2",
+    "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

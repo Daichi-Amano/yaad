@@ -2,8 +2,8 @@ backend:
   name: github
   repo: daichi-amano/yaad
   branch: master
-  site_domain: "yaad-gold.vercel.app"
-  base_url: "https://yaad-gold.vercel.app"
+  site_domain: "yaad.tokyo"
+  base_url: "https://yaad.tokyo"
   auth_endpoint: "/api/auth"
 media_folder: "src/assets/images"
 public_folder: "../assets/images"

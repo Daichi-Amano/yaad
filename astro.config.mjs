@@ -8,7 +8,7 @@ import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
-  site: import.meta.env.PUBLIC_SITE_URL || "https://yaad.inc",
+  site: import.meta.env.PUBLIC_SITE_URL || "https://yaad.tokyo",
   output: "server",
   adapter: vercel(),
   integrations: [preact()],

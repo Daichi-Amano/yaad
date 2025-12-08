@@ -27,7 +27,7 @@ collections:
       - label: ID
         name: id
         widget: string
-        hint: "https://yaad.inc/{id} の形式でURLが生成されます。一度保存したIDは変更してもURLには反映されません。他のコンテンツと同一IDは使用しないでください。"
+        hint: "https://yaad.tokyo/{id} の形式でURLが生成されます。一度保存したIDは変更してもURLには反映されません。他のコンテンツと同一IDは使用しないでください。"
         pattern:
           - "^[a-z0-9-]+$"
           - "半角英数字小文字とハイフンのみ"

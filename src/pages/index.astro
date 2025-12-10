@@ -7,8 +7,8 @@ const dataModules = import.meta.glob("./*.md", { eager: true });
 const data = Object.values(dataModules);
 const contents = data.map(({ url, frontmatter }: any) => {
   return {
-    id: url.replace("/", ""),
     ...frontmatter,
+    id: url.replace("/", ""),
   };
 });
 contents.sort((a, b) => {

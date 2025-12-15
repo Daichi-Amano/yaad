@@ -1,0 +1,29 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Hobbyプランでは、第三者のコミットでもデプロイをトリガーするために必要
+    steps:
+      - name: Trigger Vercel Deployment
+        run: |
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+            echo "⚠️ VERCEL_DEPLOY_HOOK_URL が設定されていません。"
+            echo "GitHubリポジトリの Settings → Secrets and variables → Actions で設定してください。"
+            exit 1
+          fi
+
+          echo "🚀 Vercelへのデプロイをトリガーしています..."
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+
+          if [ $? -eq 0 ]; then
+            echo "✅ デプロイがトリガーされました"
+          else
+            echo "❌ デプロイのトリガーに失敗しました"
+            exit 1
+          fi

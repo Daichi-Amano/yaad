@@ -10,36 +10,34 @@ jobs:
     runs-on: ubuntu-latest
     # Hobbyプランでは、第三者のコミットでもデプロイをトリガーするために必要
     steps:
-      - name: Trigger Vercel Deployment
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
-            echo "⚠️ VERCEL_DEPLOY_HOOK_URL が設定されていません。"
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "❌ VERCEL_TOKEN が設定されていません。"
             echo "GitHubリポジトリの Settings → Secrets and variables → Actions で設定してください。"
             exit 1
           fi
 
-          echo "🚀 Vercelへのデプロイをトリガーしています..."
-          echo "Deploy Hook URL: ${VERCEL_DEPLOY_HOOK_URL:0:50}..." # 最初の50文字のみ表示（セキュリティのため）
+          echo "🚀 Vercelへのデプロイを開始しています..."
 
-          # レスポンスを変数に保存
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}")
-
-          # HTTPステータスコードを抽出
-          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
-          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS:/d')
-
-          echo "📋 レスポンス:"
-          echo "$BODY" | jq '.' 2>/dev/null || echo "$BODY"
-
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
-            echo "✅ デプロイがトリガーされました (HTTP $HTTP_STATUS)"
-            echo ""
-            echo "📝 次のステップ:"
-            echo "   Vercelダッシュボードでデプロイメントの状態を確認してください:"
-            echo "   https://vercel.com/dashboard"
-          else
-            echo "❌ デプロイのトリガーに失敗しました (HTTP $HTTP_STATUS)"
-            echo "📋 エラーレスポンス:"
-            echo "$BODY"
-            exit 1
-          fi
+          # Vercel CLIでデプロイ
+          vercel --prod --token="$VERCEL_TOKEN" --yes

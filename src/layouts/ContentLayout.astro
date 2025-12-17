@@ -6,7 +6,11 @@ const { frontmatter } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 
 const imgAsset = await assets[frontmatter.img]();
-const optimizedImage = await getImage({ src: imgAsset.default });
+const optimizedImage = await getImage({
+  src: imgAsset.default,
+  quality: 85,
+  format: "webp",
+});
 
 const pageTitle = `${frontmatter.title} | YAAD.inc`;
 
@@ -72,6 +76,8 @@ const currentPageIndex = allContents.findIndex(
               class="w-full h-auto"
               src={imgAsset.default}
               alt="main-image"
+              quality={85}
+              format="webp"
             />
             <article>
               <slot />

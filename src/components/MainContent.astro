@@ -3,7 +3,11 @@ import { Image, getImage } from "astro:assets";
 const { id, img, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 const imgAsset = await assets[img]();
-const optimizedImage = await getImage({ src: imgAsset.default });
+const optimizedImage = await getImage({
+  src: imgAsset.default,
+  quality: 85,
+  format: "webp",
+});
 ---
 
 <div id={id} data-section class="relative h-screen w-full flex items-center">
@@ -21,21 +25,29 @@ const optimizedImage = await getImage({ src: imgAsset.default });
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
       </div>
       <div class="flex shrink-0 animate-[ticker2_60s_linear_infinite]">
@@ -43,21 +55,29 @@ const optimizedImage = await getImage({ src: imgAsset.default });
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
         <Image
           class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
           src={imgAsset.default}
           alt="main-image"
+          quality={85}
+          format="webp"
         />
       </div>
     </div>

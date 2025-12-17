@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # 別ユーザーからのpushでもワークフローを実行できるようにする
+    permissions:
+      contents: read
     steps:
       - name: Deploy to Vercel
         env:

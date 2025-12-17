@@ -22,32 +22,55 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Deploy to Vercel
+      - name: Deploy to Vercel using Deploy Hook
         env:
           VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
             echo "❌ VERCEL_DEPLOY_HOOK_URL が設定されていません。"
-            echo "Vercelのダッシュボードで Deploy Hook を作成し、"
-            echo "GitHubリポジトリの Settings → Secrets and variables → Actions で設定してください。"
             echo ""
             echo "Deploy Hook の作成方法:"
             echo "1. Vercelダッシュボード → プロジェクト設定 → Git → Deploy Hooks"
-            echo "2. 新しいHookを作成（ブランチ: master）"
-            echo "3. 生成されたURLを VERCEL_DEPLOY_HOOK_URL として設定"
+            echo "2. 新しいHookを作成"
+            echo "   - Name: GitHub Actions Deploy"
+            echo "   - Branch: master (またはブランチ名を一致させる)"
+            echo "   - Git Provider: GitHub"
+            echo "3. 生成されたURLを VERCEL_DEPLOY_HOOK_URL としてGitHub Secretsに設定"
             exit 1
           fi
 
           echo "🚀 Vercelへのデプロイを開始しています..."
+          echo "📍 現在のブランチ: ${{ github.ref_name }}"
+          echo "📍 現在のコミット: ${{ github.sha }}"
 
           # Deploy Hookを使用することで、Git authorのチェックを回避できます
           # これにより、別ユーザーのpushでもデプロイが可能になります
-          response=$(curl -X POST "$VERCEL_DEPLOY_HOOK_URL")
+          response=$(curl -s -w "\n%{http_code}" -X POST "$VERCEL_DEPLOY_HOOK_URL")
 
-          if [ $? -eq 0 ]; then
-            echo "✅ デプロイが正常にトリガーされました。"
-            echo "$response"
+          http_code=$(echo "$response" | tail -1)
+          body=$(echo "$response" | sed '$d')
+
+          if [ "$http_code" = "200" ] || [ "$http_code" = "201" ]; then
+            echo "✅ Deploy Hookが正常にトリガーされました (HTTP $http_code)"
+            echo "レスポンス: $body"
+            
+            # レスポンスから情報を抽出
+            if echo "$body" | grep -q '"url"'; then
+              deployment_url=$(echo "$body" | grep -o '"url":"[^"]*"' | head -1 | cut -d'"' -f4)
+              echo "🔗 デプロイURL: $deployment_url"
+            fi
+            
+            if echo "$body" | grep -q '"id"'; then
+              job_id=$(echo "$body" | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
+              echo "📋 Job ID: $job_id"
+            fi
+            
+            echo ""
+            echo "ℹ️  デプロイがキューに追加されました。"
+            echo "   デプロイの状態はVercelダッシュボードで確認してください:"
+            echo "   https://vercel.com/dashboard"
           else
-            echo "❌ デプロイのトリガーに失敗しました。"
+            echo "❌ Deploy Hookのトリガーに失敗しました (HTTP $http_code)"
+            echo "レスポンス: $body"
             exit 1
           fi

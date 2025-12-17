@@ -22,31 +22,32 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
       - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "❌ VERCEL_TOKEN が設定されていません。"
+          if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
+            echo "❌ VERCEL_DEPLOY_HOOK_URL が設定されていません。"
+            echo "Vercelのダッシュボードで Deploy Hook を作成し、"
             echo "GitHubリポジトリの Settings → Secrets and variables → Actions で設定してください。"
+            echo ""
+            echo "Deploy Hook の作成方法:"
+            echo "1. Vercelダッシュボード → プロジェクト設定 → Git → Deploy Hooks"
+            echo "2. 新しいHookを作成（ブランチ: master）"
+            echo "3. 生成されたURLを VERCEL_DEPLOY_HOOK_URL として設定"
             exit 1
           fi
 
           echo "🚀 Vercelへのデプロイを開始しています..."
 
-          # Git authorを設定して、Vercelのチームアクセスチェックを回避
+          # Deploy Hookを使用することで、Git authorのチェックを回避できます
           # これにより、別ユーザーのpushでもデプロイが可能になります
-          git config user.email "amano@andpro.jp"
-          git config user.name "daichi-amano"
+          response=$(curl -X POST "$VERCEL_DEPLOY_HOOK_URL")
 
-          # Vercel CLIでデプロイ（--scopeを明示的に指定）
-          if [ -n "$VERCEL_ORG_ID" ]; then
-            vercel --prod --token="$VERCEL_TOKEN" --scope="$VERCEL_ORG_ID" --yes
+          if [ $? -eq 0 ]; then
+            echo "✅ デプロイが正常にトリガーされました。"
+            echo "$response"
           else
-            vercel --prod --token="$VERCEL_TOKEN" --yes
+            echo "❌ デプロイのトリガーに失敗しました。"
+            exit 1
           fi

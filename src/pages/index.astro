@@ -25,18 +25,21 @@ contents.sort((a, b) => {
   <Loading />
   <main class="py-16 max-w-full flex-1">
     {
-      contents.map(({ id, title, categories, release, img }, index) => {
-        return (
-          <MainContent
-            id={id}
-            index={index}
-            title={title}
-            categories={categories}
-            release={release}
-            img={img}
-          />
-        );
-      })
+      contents.map(
+        ({ id, title, categories, release, img, subImages }, index) => {
+          return (
+            <MainContent
+              id={id}
+              index={index}
+              title={title}
+              categories={categories}
+              release={release}
+              img={img}
+              subImages={subImages}
+            />
+          );
+        },
+      )
     }
   </main>
   <footer

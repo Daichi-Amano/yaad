@@ -39,6 +39,14 @@ collections:
         name: img
         widget: image
         required: true
+      - label: SubImages
+        name: subImages
+        widget: list
+        required: false
+        field:
+          label: Image
+          name: img
+          widget: image
       - label: Body
         name: body
         widget: markdown

@@ -12,6 +12,14 @@ const optimizedImage = await getImage({
   format: "webp",
 });
 
+const subImagesAssets =
+  frontmatter.subImages && frontmatter.subImages.length > 0
+    ? await Promise.all(
+        frontmatter.subImages.map((subImage: string) => {
+          return assets[subImage]();
+        }),
+      )
+    : [];
 const pageTitle = `${frontmatter.title} | YAAD.inc`;
 
 // すべてのページデータを取得して、現在のページのインデックスを計算
@@ -79,6 +87,21 @@ const currentPageIndex = allContents.findIndex(
               quality={85}
               format="webp"
             />
+            {
+              subImagesAssets &&
+                subImagesAssets.length > 0 &&
+                subImagesAssets.map((subImageAsset, index) => {
+                  return (
+                    <Image
+                      class="w-full h-auto"
+                      src={subImageAsset.default}
+                      alt={`sub-image-${index + 1}`}
+                      quality={85}
+                      format="webp"
+                    />
+                  );
+                })
+            }
             <article>
               <slot />
             </article>

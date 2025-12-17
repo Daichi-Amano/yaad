@@ -1,6 +1,6 @@
 ---
 import { Image, getImage } from "astro:assets";
-const { id, img, title, categories, release } = Astro.props;
+const { id, img, subImages, title, categories, release } = Astro.props;
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/**/*");
 const imgAsset = await assets[img]();
 const optimizedImage = await getImage({
@@ -8,6 +8,36 @@ const optimizedImage = await getImage({
   quality: 85,
   format: "webp",
 });
+
+// スライダー用の画像アセット配列を作成
+// subImagesが存在する場合はimgAssetの後にsubImagesのアセットを並べる
+const subImageAssets =
+  subImages && subImages.length > 0
+    ? await Promise.all(subImages.map((subImage: string) => assets[subImage]()))
+    : [];
+
+const baseSliderImages =
+  subImages && subImages.length > 0
+    ? [imgAsset, ...subImageAssets]
+    : [imgAsset];
+
+// 最低4つになるように画像を繰り返す
+// baseSliderImages全体を繰り返して、最低4つ以上になるようにする
+const minImageCount = 4;
+const repeatCount = Math.ceil(minImageCount / baseSliderImages.length);
+const sliderImages: typeof baseSliderImages = [];
+for (let i = 0; i < repeatCount; i++) {
+  sliderImages.push(...baseSliderImages);
+}
+
+// アニメーション速度を画像数に応じて計算
+// 基準: 4枚の画像で60秒（1枚あたり15秒）
+// 画像数に比例してアニメーション時間を調整
+const imageCount = sliderImages.length;
+const baseDuration = 60; // 基準時間（秒）
+const baseImageCount = 4; // 基準画像数
+const animationDuration = (imageCount / baseImageCount) * baseDuration;
+const animationDelay = -animationDuration / 2; // tickerの遅延時間
 ---
 
 <div id={id} data-section class="relative h-screen w-full flex items-center">
@@ -20,65 +50,37 @@ const optimizedImage = await getImage({
   </div>
   <a href={`/${id}`} class="overflow-x-clip w-full">
     <div class="flex shrink-0 overflow-hidden">
-      <div class="flex shrink-0 animate-[ticker_60s_-30s_linear_infinite]">
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
+      <div
+        class="flex shrink-0"
+        style={`animation: ticker ${animationDuration}s ${animationDelay}s linear infinite;`}
+      >
+        {
+          [...sliderImages, ...sliderImages].map((asset) => (
+            <Image
+              class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
+              src={asset.default}
+              alt="slider-image"
+              quality={85}
+              format="webp"
+            />
+          ))
+        }
       </div>
-      <div class="flex shrink-0 animate-[ticker2_60s_linear_infinite]">
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
-        <Image
-          class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
-          src={imgAsset.default}
-          alt="main-image"
-          quality={85}
-          format="webp"
-        />
+      <div
+        class="flex shrink-0"
+        style={`animation: ticker2 ${animationDuration}s linear infinite;`}
+      >
+        {
+          [...sliderImages, ...sliderImages].map((asset) => (
+            <Image
+              class="shrink-0 h-136 w-136 px-[0.7rem] md:px-[0.85rem] md:h-[51.7rem] md:w-[51.7rem]"
+              src={asset.default}
+              alt="slider-image"
+              quality={85}
+              format="webp"
+            />
+          ))
+        }
       </div>
     </div>
     <div

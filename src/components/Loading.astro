@@ -1,36 +1,87 @@
 ---
 import { Image } from "astro:assets";
-import loader from "../assets/loader.svg";
+import logo from "../assets/logo.svg";
 ---
+
+<!-- 即座に実行されるインラインスクリプトでコンテンツを非表示 -->
+<script is:inline>
+  (function () {
+    function hideContent() {
+      const mainContent = document.getElementById("main-content");
+      const footer = document.getElementById("main-footer");
+
+      if (mainContent) {
+        mainContent.style.opacity = "0";
+        mainContent.style.visibility = "hidden";
+      }
+      if (footer) {
+        footer.style.opacity = "0";
+        footer.style.visibility = "hidden";
+      }
+    }
+
+    // DOMが既に読み込まれている場合は即座に実行
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", hideContent);
+    } else {
+      hideContent();
+    }
+  })();
+</script>
 
 <div
   id="loading"
-  class="fixed top-0 left-0 w-full h-full py-[13.5rem] bg-[#404040] flex items-center justify-center z-[9999] opacity-0 pointer-events-none"
+  class="fixed top-0 left-0 w-full h-full py-[13.5rem] bg-[#00f] flex items-center justify-center z-[9999] opacity-0 pointer-events-none"
+  tabindex="-1"
 >
   <Image
-    id="loader-logo"
-    src={loader}
+    id="logo"
+    src={logo}
     alt="loader"
-    class="w-full max-w-[80vw] h-full object-contain! opacity-0 transition-opacity duration-1000 ease-out"
+    class="w-[38vw] md:w-[15vw] h-full object-contain! opacity-0 transition-opacity duration-1000 ease-out"
   />
 </div>
 
 <script>
   function loadingAnimation() {
     const loading = document.getElementById("loading");
-    const loaderLogo = document.getElementById("loader-logo");
+    const loaderLogo = document.getElementById("logo");
+    const mainContent = document.getElementById("main-content");
+    const footer = document.getElementById("main-footer");
 
     if (loading && loaderLogo) {
+      // ローディング画面を表示してフォーカスを当てる
       loading.style.opacity = "1";
+      loading.style.pointerEvents = "auto";
+
+      // ローディング画面でスクロールイベントを止める
+      const stopScroll = function (e: Event) {
+        e.preventDefault();
+      };
+      loading.addEventListener("wheel", stopScroll, { passive: false });
+      loading.addEventListener("touchmove", stopScroll, { passive: false });
+
       // 1. 0.25秒待ってからロゴを1秒アニメーション
       setTimeout(() => {
         loaderLogo.style.opacity = "1";
-        loaderLogo.style.transition = "opacity 1s ease-out";
 
         // 2. ロゴアニメーション完了後、0.25秒待ってから画面全体を1秒アニメーション
         setTimeout(() => {
-          loading.style.opacity = "0";
           loading.style.transition = "opacity 1s ease-out";
+          loading.style.opacity = "0";
+
+          // メインコンテンツとフッターを表示
+          if (mainContent) {
+            (mainContent as HTMLElement).style.visibility = "visible";
+            (mainContent as HTMLElement).style.opacity = "1";
+          }
+          if (footer) {
+            (footer as HTMLElement).style.visibility = "visible";
+            (footer as HTMLElement).style.opacity = "1";
+          }
+
+          // フォーカスを解除
+          loading.style.pointerEvents = "none";
 
           // 3. アニメーション完了後にinvisibleを追加してDOMから削除
           setTimeout(() => {

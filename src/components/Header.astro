@@ -10,13 +10,13 @@ const contents = data.map(({ frontmatter }: any) => frontmatter);
 ---
 
 <header
-  class="fixed top-0 left-0 w-full z-10 grid grid-cols-[auto_1fr_auto] items-center gap-[1.7rem] md:items-start md:gap-[4.8rem] px-[1.8rem] pt-[2.4rem] pb-[2.4rem] md:px-[2.4rem] md:pt-8 md:pb-8"
+  class="fixed top-0 left-0 w-full z-10 grid grid-cols-[auto_1fr_auto] items-center gap-[1.7rem] md:gap-[4.8rem] px-[1.8rem] pt-[2.4rem] pb-[2.4rem] md:px-[2.4rem] md:pt-8 md:pb-8"
 >
   <a href="/">
     <Image
       src={logo}
       alt="logo"
-      class="w-[7.1rem] h-[5.4rem] md:w-36 md:h-[6.8rem]"
+      class="h-[5.4rem] md:h-[7.9rem] w-auto invert brightness-0"
     />
   </a>
   <HeaderList client:load transition:persist contents={contents} />

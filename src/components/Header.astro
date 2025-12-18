@@ -3,10 +3,14 @@
 import HeaderList from "../components/HeaderList";
 import { Image } from "astro:assets";
 import logo from "../assets/logo.svg";
-// const { contents } = data;
 const dataModules = import.meta.glob("../pages/*.md", { eager: true });
 const data = Object.values(dataModules);
 const contents = data.map(({ frontmatter }: any) => frontmatter);
+contents.sort((a, b) => {
+  const dateA = new Date(a.release ?? 0);
+  const dateB = new Date(b.release ?? 0);
+  return dateB.getTime() - dateA.getTime();
+});
 ---
 
 <header

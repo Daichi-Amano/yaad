@@ -30,6 +30,7 @@ const allContents = allPages.map(({ frontmatter }: any) => frontmatter);
 const currentPageIndex = allContents.findIndex(
   (content) => content.id === frontmatter.id,
 );
+console.log(frontmatter);
 ---
 
 <Layout title={pageTitle} ogType="article">
@@ -161,7 +162,11 @@ const currentPageIndex = allContents.findIndex(
                         return (
                           <div class="flex flex-col gap-[0.6rem] md:gap-[0.8rem]">
                             <p>{name}</p>
-                            <p>{value}</p>
+                            <div>
+                              {value?.map((v: string) => (
+                                <p class="leading-[1.3em]">{v}</p>
+                              ))}
+                            </div>
                           </div>
                         );
                       })

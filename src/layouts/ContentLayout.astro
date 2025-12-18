@@ -30,7 +30,6 @@ const allContents = allPages.map(({ frontmatter }: any) => frontmatter);
 const currentPageIndex = allContents.findIndex(
   (content) => content.id === frontmatter.id,
 );
-console.log(frontmatter);
 ---
 
 <Layout title={pageTitle} ogType="article">

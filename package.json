@@ -16,6 +16,7 @@
     "@astrojs/vercel": "^9.0.2",
     "@nanostores/preact": "^1.0.0",
     "@tailwindcss/vite": "^4.1.17",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^5.14.4",
     "decap-cms-app": "^3.8.4",
     "nanostores": "^1.0.1",

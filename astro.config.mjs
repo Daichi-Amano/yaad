@@ -10,7 +10,11 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   site: import.meta.env.PUBLIC_SITE_URL || "https://yaad.tokyo",
   output: "server",
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
   integrations: [preact()],
 
   vite: {

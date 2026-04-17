@@ -10,8 +10,8 @@ interface Props {
 }
 
 const {
-  title = "YAAD.inc",
-  description = "",
+  title = "Creative studio YAAD",
+  description = "YAAD is a Tokyo-based creative studio specializing in art direction, graphic design, and product design, while also working across web, spatial production, and interior design.",
   ogImage = "/ogp.png",
   ogType = "website",
 } = Astro.props;
@@ -58,8 +58,6 @@ const ogImageURL = new URL(ogImage, Astro.site ?? Astro.url.origin);
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;900&display=swap"
       rel="stylesheet"
     />
-
-    <meta name="robots" content="noindex, nofollow" />
 
     <script>
       import { register } from "swiper/element/bundle";
